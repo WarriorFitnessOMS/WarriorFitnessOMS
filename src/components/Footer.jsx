@@ -31,18 +31,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-black text-white overflow-hidden">
-      {/* Background gym image with overlay */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&fit=crop)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      />
-      <div className="absolute inset-0 bg-black/95" />
+    <footer className="relative bg-linear-210 from-black to-gray-800 text-white overflow-hidden">
 
       <div className="relative z-10 px-6 md:px-16 lg:px-24 xl:px-48 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">

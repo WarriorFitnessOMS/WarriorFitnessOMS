@@ -50,7 +50,7 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
       `}</style>
 
       {/* TOPBAR */}
-      <div className={`bg-orange-500 text-white text-center py-2 text-sm transition-all duration-300 ${isTopBarHidden ? '-translate-y-full' : 'translate-y-0'}`}>
+      <div className={`bg-orange-500 text-white text-center py-2 text-xs md:text-sm transition-all duration-300 ${isTopBarHidden ? '-translate-y-full' : 'translate-y-0'}`}>
         <p>🔥 Limited Time Offer: Join Now and Get 20% Off Your First Month!</p>
       </div>
 
@@ -89,12 +89,6 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
               >
                 LOGIN
               </button>
-              <button
-                onClick={() => setShowRegisterModal(true)}
-                className="register-btn-glow px-5 py-2 bg-orange-500 text-white rounded-lg font-medium cursor-pointer hover:bg-orange-600 transition-all"
-              >
-                REGISTER
-              </button>
             </div>
 
             {/* MOBILE MENU BUTTON */}
@@ -112,7 +106,7 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
 
         {/* MOBILE MENU */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-black/90 border-t border-orange-500/20 p-4 backdrop-blur-md">
+          <div className="md:hidden h-screen bg-black/50 border-t border-orange-500/20 p-4 backdrop-blur-md">
             <div className="space-y-2 mb-4">
               {navLinks.map((link) => (
                 <a

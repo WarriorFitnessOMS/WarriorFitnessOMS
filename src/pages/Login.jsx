@@ -152,7 +152,7 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder='Enter your password'
-                  className='w-full px-4 py-3 rounded-lg bg-gray-800 border-2 border-orange-500/50 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all duration-300'
+                  className='w-full px-4 py-3 rounded-lg bg-neutral-700 border-2 border-orange-500/50 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all duration-300'
                 />
                 <button
                   type='button'

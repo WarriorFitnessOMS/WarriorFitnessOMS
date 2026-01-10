@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BarChart2, ClipboardList, Coffee, LogOut, MessageSquare } from 'lucide-react'
+import { BarChart2, ClipboardList, Coffee, LifeBuoy, LogOut, MessageSquare, Target, User } from 'lucide-react'
 import { assets } from '../../assets/assets'
 import { useAuth } from '../../context/AuthContext'
 import {
@@ -81,10 +81,15 @@ const Sidebar = () => {
       { label: "Schedule / Attendance", path: "/coach/schedule", icon: CalendarDays },
     ],
     member: [
-      { label: "Dashboard", path: "/member/dashboard", icon: "📊" },
-      { label: "My Workouts", path: "/member/workouts", icon: "💪" },
-      { label: "Progress", path: "/member/progress", icon: "📈" },
-      { label: "Challenges", path: "/member/challenges", icon: "🎯" }
+      { label: "Dashboard", path: "/member/dashboard", icon: LayoutDashboard },
+      { label: "Profile", path: "/member/profile", icon: User },
+      { label: "Progress", path: "/member/progress", icon: BarChart2 },
+      { label: "Membership", path: "/member/membership", icon: CreditCard },
+      { label: "Workout Plans", path: "/member/workouts", icon: ClipboardList },
+      { label: "Nutrition Plans", path: "/member/nutrition-plans", icon: Coffee },
+      { label: "Exercise Videos", path: "/member/videos", icon: Youtube },
+      { label: "Challenges", path: "/member/challenges", icon: Target },
+      { label: "Support", path: "/member/support", icon: LifeBuoy },
     ]
   }
 
@@ -141,7 +146,7 @@ const Sidebar = () => {
           >
             <Link
               to={link.path}
-              className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg text-lg font-medium transition-all duration-300 ${
+              className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                 isActive(link.path)
                   ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/50'
                   : 'text-gray-300 hover:text-orange-500 hover:bg-orange-500/10'

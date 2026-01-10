@@ -9,3 +9,4 @@ const Payments = () => {
 }
 
 export default Payments
+Payments

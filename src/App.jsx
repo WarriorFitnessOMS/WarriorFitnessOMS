@@ -17,6 +17,12 @@ import Attendance from './pages/admin/Attendance'
 import Schedule from './pages/admin/Schedule'
 import Support from './pages/admin/Support'
 import Settings from './pages/admin/Settings'
+import Students from './pages/coach/Students'
+import WorkoutPlans from './pages/coach/WorkoutPlans'
+import NutritionPlans from './pages/coach/NutritionPlans'
+import ExerciseVideos from './pages/coach/ExerciseVideos'
+import ProgressTracking from './pages/coach/ProgressTracking'
+import ScheduleCoach from './pages/coach/ScheduleCoach'
 
 
 const App = () => {
@@ -81,6 +87,30 @@ const App = () => {
              path="dashboard" 
              element={<ProtectedRoute role="coach"><CoachDashboard /></ProtectedRoute>} 
            />
+           <Route 
+             path="my-students" 
+             element={<ProtectedRoute role="coach"><Students /></ProtectedRoute>} 
+           />
+           <Route 
+             path="workout-plans" 
+             element={<ProtectedRoute role="coach"><WorkoutPlans /></ProtectedRoute>} 
+           />
+           <Route 
+            path="nutrition-plans" 
+            element={<ProtectedRoute role="coach"><NutritionPlans /></ProtectedRoute>} 
+            />
+            <Route 
+              path="exercise-videos" 
+              element={<ProtectedRoute role="coach"><ExerciseVideos /></ProtectedRoute>} 
+            />
+            <Route 
+              path="progress-tracking" 
+              element={<ProtectedRoute role="coach"><ProgressTracking/></ProtectedRoute>} 
+            />
+            <Route 
+              path="schedule" 
+              element={<ProtectedRoute role="coach"><ScheduleCoach /></ProtectedRoute>} 
+            />
         </Route>
 
         {/* MEMBER ROUTES */}

@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { LogOut } from 'lucide-react'
+import { BarChart2, ClipboardList, Coffee, LogOut, MessageSquare } from 'lucide-react'
 import { assets } from '../../assets/assets'
 import { useAuth } from '../../context/AuthContext'
 import {
@@ -14,7 +14,8 @@ import {
   Headphones,
   CalendarDays,
   ClipboardCheck,
-  Settings
+  Settings,
+  Youtube,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -69,11 +70,15 @@ const Sidebar = () => {
         icon: Settings,
       },
     ],
+    
     coach: [
-      { label: "Dashboard", path: "/coach/dashboard", icon: "📊" },
-      { label: "My Students", path: "/coach/students", icon: "👥" },
-      { label: "Workouts", path: "/coach/workouts", icon: "💪" },
-      { label: "Videos", path: "/coach/videos", icon: "🎥" }
+      { label: "Dashboard", path: "/coach/dashboard", icon: LayoutDashboard },
+      { label: "My Students", path: "/coach/my-students", icon: Users },
+      { label: "Workout Plans", path: "/coach/workout-plans", icon: ClipboardList },
+      { label: "Nutrition Plans", path: "/coach/nutrition-plans", icon: Coffee },
+      { label: "Exercise Videos", path: "/coach/exercise-videos", icon: Youtube },
+      { label: "Progress Tracking", path: "/coach/progress-tracking", icon: BarChart2 },
+      { label: "Schedule / Attendance", path: "/coach/schedule", icon: CalendarDays },
     ],
     member: [
       { label: "Dashboard", path: "/member/dashboard", icon: "📊" },

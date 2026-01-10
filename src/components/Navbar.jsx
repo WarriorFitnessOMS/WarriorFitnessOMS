@@ -1,12 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { assets } from '../assets/assets';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
+
+  const navigate = useNavigate()
+  const location = useLocation();
+  
+  const isHome = location.pathname === '/';
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isTopBarHidden, setIsTopBarHidden] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isScrolled, setisScrolled] = useState(false);
+
+
+  const handleNavClick = (sectionId) => {
+    if (!sectionId) return;
+
+    if (isHome) {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior : 'smooth'})
+
+    } else {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior : 'smooth'})
+      }, 150)
+    }
+
+    setIsMobileMenuOpen(false);
+  }
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,12 +52,12 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
   }, []);
 
   const navLinks = [
-    { label: 'HOME', href: '#home' },
-    { label: 'ABOUT', href: '#about' },
-    { label: 'SUCCESS STORIES', href: '#stories' },
-    { label: 'ACHIEVEMENTS', href: '#achievements' },
-    { label: 'FAQ', href: '#faq' },
-    { label: 'CALCULATORS', href: '#calculators' },
+    { label: 'HOME', sectionId: 'home' },
+    { label: 'ABOUT', sectionId: 'about' },
+    { label: 'SUCCESS STORIES', sectionId: 'stories' },
+    { label: 'ACHIEVEMENTS', sectionId: 'achievements' },
+    { label: 'FAQ', sectionId: 'faq' },
+    { label: 'CALCULATORS', sectionId: 'calculators' },
   ];
 
   return (
@@ -60,24 +86,31 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
           <div className="flex items-center justify-between">
 
             {/* LOGO */}
-            <a href="#home" className="flex items-center gap-2 shrink-0 w-12 md:w-16 rounded-lg">
-              <img src={assets.logo} alt="Warrior Fitness Logo" className="w-full h-auto" />
+            <button 
+              className="flex items-center gap-2 shrink-0 w-12 md:w-16 rounded-lg cursor-pointer"
+              onClick={() => navigate('/')}
+            >     
+              <img
+                src={assets.logo} 
+                alt="Warrior Fitness Logo" 
+                className="w-full h-auto"
+              />
               <span className="text-white font-bold text-base md:text-3xl flex flex-col">
                 <h2 className='text-red-500'>WARRIOR</h2>
                 <h2 className='text-white -mt-1'>FITNESS</h2>
               </span>
-            </a>
+            </button>
 
             {/* DESKTOP NAV */}
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.label}
-                  href={link.href}
+                  onClick={() => handleNavClick(link.sectionId)}
                   className="nav-link-glow text-sm font-medium text-gray-300 transition-colors"
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
             </div>
 
@@ -109,14 +142,13 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
           <div className="md:hidden h-screen bg-black/50 border-t border-orange-500/20 p-4 backdrop-blur-md">
             <div className="space-y-2 mb-4">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.label}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => handleNavClick(link.sectionId)}
                   className="nav-link-glow block text-sm font-medium py-3 px-3 rounded-lg text-gray-300 hover:bg-orange-500/10 transition-colors"
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
             </div>
 

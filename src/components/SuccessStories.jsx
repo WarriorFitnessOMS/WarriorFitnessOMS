@@ -69,7 +69,7 @@ const SuccessStories = () => {
   };
 
   return (
-    <section className="w-full py-12 md:py-20 px-4 md:px-6 bg-black">
+    <section className="w-full py-12 md:py-20 px-4 md:px-6 bg-linear-to-b from-gray-900 to-black ">
       {/* HEADING */}
       <motion.div
         className="max-w-7xl mx-auto text-center mb-12 md:mb-16"

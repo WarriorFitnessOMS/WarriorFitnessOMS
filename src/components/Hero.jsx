@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import { AnimatePresence, easeOut, motion } from 'framer-motion'
 import LightEffects from './LightEffects';
+import { useNavigate } from 'react-router-dom';
 
 const heroContent = [
   {
@@ -33,8 +34,13 @@ const heroContent = [
 ];
 
 const Hero = () => {
+
+  const navigate = useNavigate();
+
   const [contentIndex, setContentIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
+
+
 
   // Detect screen size
   useEffect(() => {
@@ -133,7 +139,10 @@ const Hero = () => {
         </motion.div>
       </AnimatePresence>
 
-      <button className='relative z-20 mt-10 px-4 lg:px-10 py-2 lg:py-4 bg-red-600 text-white rounded text-2xl md:text-3xl font-BabesNeue cursor-pointer hover:bg-red-500 transition-all '>
+      <button 
+        onClick={() => navigate('/register') }
+        className='relative z-20 mt-10 px-4 lg:px-10 py-2 lg:py-4 bg-red-600 text-white rounded text-2xl md:text-3xl font-BabesNeue cursor-pointer hover:bg-red-500 transition-all'
+      >
         Register Now
       </button>
     </div>

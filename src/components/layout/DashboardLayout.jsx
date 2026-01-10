@@ -18,9 +18,6 @@ const DashboardLayout = () => {
         transition={{ duration: 0.5 }}
       >
         {/* HEADER */}
-        <header className='bg-black border-b border-orange-500/20 px-8 py-6'>
-          <h1 className='text-3xl font-bold text-white'>Dashboard</h1>
-        </header>
 
         {/* PAGE CONTENT */}
         <main className='flex-1 overflow-auto'>

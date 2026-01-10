@@ -98,7 +98,7 @@ const Sidebar = () => {
 
   return (
     <motion.aside
-      className='fixed left-0 top-0 h-screen w-72 py-6 bg-black border-r border-orange-500/20 flex flex-col z-40'
+      className='fixed left-0 top-0 h-screen w-72 py-6 bg-black border-r border-orange-500 flex flex-col z-40'
       initial={{ x: -288 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.3 }}

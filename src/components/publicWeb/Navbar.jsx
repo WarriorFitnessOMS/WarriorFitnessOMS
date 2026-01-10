@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { assets } from '../assets/assets';
+import { assets } from '../../assets/assets';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 

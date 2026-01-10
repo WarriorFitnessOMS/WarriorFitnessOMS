@@ -7,7 +7,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { assets } from '../assets/assets';
+import { assets } from '../../assets/assets';
 
 const Plans = () => {
   const [activeIndex, setActiveIndex] = useState(0);

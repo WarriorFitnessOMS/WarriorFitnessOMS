@@ -2,9 +2,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { assets } from '../assets/assets';
+import { assets } from '../../assets/assets';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
+
+  const navigate = useNavigate()
+  const { login } = useAuth()
+
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,7 +39,33 @@ const Login = () => {
 
     setLoading(true);
     try {
-        console.log(formData);  
+        
+      //MOCK LOGIN-------------------------------------
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      //simple logic to test different dashboard based on username
+      let role = 'member';
+      if (formData.username.toLowerCase().includes('admin')) role = 'admin';
+      else if (formData.username.toLowerCase().includes('coach')) role = 'coach'
+
+      // Create a fake user object
+      const mockUserResponse = {
+        _id : '123456',
+        username : formData.username,
+        role : role,
+        token : 'fake-jwt-toke-xyz'
+      }
+
+      login(mockUserResponse);
+
+      // Redirect based on role
+      if (mockUserResponse.role === 'admin') {
+        navigate('/admin/dashboard')
+      } else if (mockUserResponse.role === 'coach'){
+        navigate('/coach/dashboard')
+      } else {
+        navigate('/member/dashboard')
+      }
       
     } catch (err) {
       setError('An error occurred. Please try again.');

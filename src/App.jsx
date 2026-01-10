@@ -1,27 +1,66 @@
 import React from 'react'
-import Navbar from './components/Navbar'
+import Navbar from './components/publicWeb/Navbar'
 import {  Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import Register from './pages/Register'
-import Footer from './components/Footer'
-import Login from './pages/Login'
+import Home from './pages/publicWeb/Home'
+import Register from './pages/publicWeb/Register'
+import Login from './pages/publicWeb/Login'
+import PublicLayout from './components/layout/PublicLayout'
+import DashboardLayout from './components/layout/DashboardLayout'
+import ProtectedRoute from './components/auth/ProtectedRoute'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import Approvals from './pages/admin/Approvals'
+import CoachDashboard from './pages/coach/CoachDashboard'
+import MemberDashboard from './pages/member/MemberDashboard'
 
 
 const App = () => {
   return (
-    <div className='bg-neutral-800 min-h-screen'>
-      <>
-        <Navbar/>
+    <Routes>
+      {/* -------PUBLIC ZONE--------- */}
+      <Route element={<PublicLayout/>}>
+        <Route path='/' element={<Home/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+      </Route>
 
-        <Routes >
-          <Route path ='/' element={ <Home/>} />
-          <Route path ='/register' element={ <Register/>} />
-          <Route path ='/login' element={ <Login/>} />
-        </Routes>
 
-        <Footer/>
-      </>
-    </div>
+
+      {/* SHARED DASHBOARD LAYOUT */}
+      <Route element={<DashboardLayout />}>
+        
+        {/* ADMIN ROUTES */}
+        <Route path="/admin">
+          <Route 
+            path="dashboard" 
+            element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>} 
+          />
+          <Route 
+            path="approvals" 
+            element={<ProtectedRoute role="admin"><Approvals/></ProtectedRoute>} 
+          />
+          <Route path="members" element={<div>Member Management Page</div>} />
+        </Route>
+
+        {/* COACH ROUTES */}
+        <Route path="/coach">
+           <Route 
+             path="dashboard" 
+             element={<ProtectedRoute role="coach"><CoachDashboard /></ProtectedRoute>} 
+           />
+        </Route>
+
+        {/* MEMBER ROUTES */}
+        <Route path="/member">
+           <Route 
+             path="dashboard" 
+             element={<ProtectedRoute role="member"><MemberDashboard /></ProtectedRoute>} 
+           />
+        </Route>
+
+      </Route>
+
+
+    </Routes>
   )
 }
 

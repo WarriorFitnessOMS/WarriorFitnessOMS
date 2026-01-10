@@ -4,7 +4,7 @@ import { assets } from '../assets/assets';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 
-const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
+const Navbar = () => {
 
   const navigate = useNavigate()
   const location = useLocation();
@@ -117,7 +117,7 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
             {/* BUTTONS - LOGIN/REGISTER */}
             <div className="hidden md:flex items-center gap-3">
               <button
-                onClick={() => setShowLoginModal(true)}
+                onClick={() => navigate('/login')}
                 className="px-5 py-2 rounded-lg bg-red-600 text-white font-bold cursor-pointer hover:bg-red-500 transition-all"
               >
                 LOGIN
@@ -154,16 +154,10 @@ const Navbar = ({ setShowLoginModal, setShowRegisterModal }) => {
 
             <div className="flex flex-col gap-2 pt-4 border-t border-orange-500/20">
               <button
-                onClick={() => { setShowLoginModal(true); setIsMobileMenuOpen(false); }}
+                onClick={() => { navigate('/login'); setIsMobileMenuOpen(false); }}
                 className="w-full px-5 py-3 rounded-lg bg-red-600 text-white font-bold hover:bg-red-500 transition-all text-sm"
               >
                 LOGIN
-              </button>
-              <button
-                onClick={() => { setShowRegisterModal(true); setIsMobileMenuOpen(false); }}
-                className="register-btn-glow w-full px-5 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-all text-sm"
-              >
-                REGISTER
               </button>
             </div>
           </div>

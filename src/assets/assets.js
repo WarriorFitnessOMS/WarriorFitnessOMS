@@ -7,6 +7,8 @@ import feature_icon_03 from './feature-icon-3.png'
 import feature_icon_04 from './feature-icon-4.png'
 import dumbel_icon from './dumbel-icon.png'
 import floating_dumle from './floating_dumble.png'
+import login_bg from './login_bg.jpg'
+
 
 
 
@@ -19,5 +21,6 @@ export const assets = {
     feature_icon_03,
     feature_icon_04,
     floating_dumle,
-    dumbel_icon
+    dumbel_icon,
+    login_bg
 }

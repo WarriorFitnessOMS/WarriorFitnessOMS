@@ -25,6 +25,7 @@ import NutritionPlansMember from '../pages/member/NutritionPlansMember'
 import ExerciseVideosMember from '../pages/member/ExerciseVideosMember'
 import Challanges from '../pages/member/Challanges'
 import SupportMember from '../pages/member/SupportMember'
+import Plans from '../pages/admin/Plans'
 
 
 export const adminRoutes = [
@@ -34,6 +35,7 @@ export const adminRoutes = [
     { path: 'members', element: Members },
     { path: 'coaches', element: Coaches },
     { path: 'attendance', element: Attendance },
+    { path: 'plans', element: Plans },
     { path: 'schedule', element: Schedule },
     { path: 'support', element: Support },
     { path: 'settings', element: Settings },

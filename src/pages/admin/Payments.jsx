@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Download, Filter, Eye, FileText, RotateCw } from 'lucide-react'
+import { Search, Download, Filter, Eye, FileText, RotateCw, DollarSign, BarChart, Hourglass, BarChart2Icon } from 'lucide-react'
 
 const Payments = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -23,9 +23,9 @@ const Payments = () => {
   ]
 
   const statsCards = [
-    { amount: '$45,890', label: 'Total Revenue', change: '+12% from last month', icon: '💰' },
-    { amount: '$8,420', label: 'This Month', change: '+8% from last month', icon: '📊' },
-    { amount: '$1,250', label: 'Pending Payments', change: '5 transactions', icon: '⏳' }
+    { amount: '$45,890', label: 'Total Revenue', change: '+12% from last month', icon: DollarSign },
+    { amount: '$8,420', label: 'This Month', change: '+8% from last month', icon: BarChart2Icon },
+    { amount: '$1,250', label: 'Pending Payments', change: '5 transactions', icon: Hourglass }
   ]
 
   // Filter data based on search and filters
@@ -78,21 +78,26 @@ const Payments = () => {
 
       {/* STATS CARDS */}
       <motion.div variants={itemVariants} className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
-        {statsCards.map((stat, index) => (
-          <div
-            key={index}
-            className='bg-neutral-800 rounded-lg p-6 border-l-4 border-orange-500'
-          >
-            <div className='flex items-start justify-between'>
-              <div>
-                <p className='text-orange-500 text-3xl font-bold'>{stat.amount}</p>
-                <p className='text-white font-semibold text-sm mt-1'>{stat.label}</p>
-                <p className='text-gray-400 text-xs mt-1'>{stat.change}</p>
+        {statsCards.map((stat, index) => {
+
+          const Icon = stat.icon
+
+          return (
+            <div
+              key={index}
+              className='bg-neutral-800 rounded-lg p-6 border-l-4 border-orange-500'
+            >
+              <div className='flex items-start justify-between'>
+                <div>
+                  <p className='text-orange-500 text-3xl font-bold'>{stat.amount}</p>
+                  <p className='text-white font-semibold text-sm mt-1'>{stat.label}</p>
+                  <p className='text-gray-400 text-xs mt-1'>{stat.change}</p>
+                </div>
+                <span className='text-3xl'>{<Icon size={36}/>}</span>
               </div>
-              <span className='text-3xl'>{stat.icon}</span>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </motion.div>
 
       {/* FILTERS SECTION */}

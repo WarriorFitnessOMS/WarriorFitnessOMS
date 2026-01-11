@@ -1,13 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, Check, X, Mail, Phone, Calendar, User } from 'lucide-react'
+import { ChevronDown, Check, X, Mail, Phone, Calendar, User, AlertCircle, Heart, Dumbbell, Clock } from 'lucide-react'
 
 const Approvals = () => {
   const [expandedId, setExpandedId] = useState(null)
   const [statusFilter, setStatusFilter] = useState('pending')
   const [searchTerm, setSearchTerm] = useState('')
 
-  // Mock registration requests from public form
   const [requests, setRequests] = useState([
     {
       id: 1,
@@ -80,7 +80,6 @@ const Approvals = () => {
     }
   ])
 
-  // Filter requests
   const filteredRequests = requests.filter(req => {
     const matchesStatus = statusFilter === 'all' || req.status === statusFilter
     const matchesSearch = req.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,6 +114,23 @@ const Approvals = () => {
     }
   }
 
+  const getExperienceBadgeColor = (level) => {
+    switch (level) {
+      case 'Beginner':
+        return 'bg-blue-500/20 text-blue-300'
+      case 'Intermediate':
+        return 'bg-purple-500/20 text-purple-300'
+      case 'Advanced':
+        return 'bg-orange-500/20 text-orange-300'
+      default:
+        return 'bg-gray-500/20 text-gray-300'
+    }
+  }
+
+  const hasHealthConcerns = (req) => {
+    return req.currentConditions[0] !== 'None' || req.medications !== 'None' || req.allergies !== 'None' || req.pastSurgeries !== 'None'
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -130,55 +146,71 @@ const Approvals = () => {
 
   return (
     <motion.div
-      className='w-full min-h-screen bg-neutral-900 text-white pb-8'
+      className='w-full min-h-screen bg-neutral-900 text-white pb-8 px-4'
       variants={containerVariants}
       initial='hidden'
       animate='visible'
     >
       {/* HEADER */}
-      <motion.div variants={itemVariants} className='mb-8'>
-        <h1 className='text-4xl font-bold text-orange-500'>Registration Requests</h1>
-        <p className='text-gray-400 text-sm mt-2'>Review and approve/reject new member registration requests</p>
+      <motion.div variants={itemVariants} className='mb-8 pt-4'>
+        <div className='flex items-center justify-between'>
+          <div>
+            <h1 className='text-4xl font-bold'>
+              <span className='text-orange-500'>Registration</span>
+              <span className='text-white'> Requests</span>
+            </h1>
+            <p className='text-gray-400 text-sm mt-2'>Review and approve new member applications</p>
+          </div>
+          <div className='text-right'>
+            <p className='text-3xl font-bold text-orange-500'>{filteredRequests.length}</p>
+            <p className='text-gray-400 text-sm'>Showing</p>
+          </div>
+        </div>
       </motion.div>
 
       {/* STATS */}
-      <motion.div variants={itemVariants} className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
-        <div className='bg-neutral-800 rounded-lg p-6 border-l-4 border-yellow-500'>
-          <p className='text-yellow-400 text-3xl font-bold'>{requests.filter(r => r.status === 'pending').length}</p>
-          <p className='text-white font-semibold text-sm mt-1'>Pending Requests</p>
-        </div>
-        <div className='bg-neutral-800 rounded-lg p-6 border-l-4 border-green-500'>
-          <p className='text-green-400 text-3xl font-bold'>{requests.filter(r => r.status === 'approved').length}</p>
-          <p className='text-white font-semibold text-sm mt-1'>Approved</p>
-        </div>
-        <div className='bg-neutral-800 rounded-lg p-6 border-l-4 border-red-500'>
-          <p className='text-red-400 text-3xl font-bold'>{requests.filter(r => r.status === 'rejected').length}</p>
-          <p className='text-white font-semibold text-sm mt-1'>Rejected</p>
-        </div>
+      <motion.div variants={itemVariants} className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8'>
+        {[
+          { label: 'Pending', count: requests.filter(r => r.status === 'pending').length, color: 'yellow', icon: '⏳' },
+          { label: 'Approved', count: requests.filter(r => r.status === 'approved').length, color: 'green', icon: '✅' },
+          { label: 'Rejected', count: requests.filter(r => r.status === 'rejected').length, color: 'red', icon: '❌' }
+        ].map((stat, idx) => (
+          <motion.div
+            key={idx}
+            className={`bg-neutral-800 rounded-lg p-5 border-l-4 border-${stat.color}-500 hover:bg-neutral-700/50 transition-all`}
+            whileHover={{ y: -2 }}
+          >
+            <div className='flex items-center justify-between'>
+              <div>
+                <p className={`text-${stat.color}-400 text-sm`}>{stat.label}</p>
+                <p className='text-3xl font-bold text-white mt-1'>{stat.count}</p>
+              </div>
+              <span className='text-3xl'>{stat.icon}</span>
+            </div>
+          </motion.div>
+        ))}
       </motion.div>
 
-      {/* FILTERS */}
+      {/* FILTERS & SEARCH */}
       <motion.div variants={itemVariants} className='bg-neutral-800 rounded-lg p-6 border border-orange-500/20 mb-8'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          {/* SEARCH */}
           <div>
-            <label className='text-gray-400 text-sm mb-2 block'>Search by name or email</label>
+            <label className='text-gray-400 text-sm mb-2 block font-semibold'>Search</label>
             <input
               type='text'
-              placeholder='Search requests...'
+              placeholder='Search by name or email...'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className='w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white text-sm focus:outline-none focus:border-orange-500'
+              className='w-full px-4 py-3 rounded-lg bg-neutral-700 border border-neutral-600 text-white text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 transition-all'
             />
           </div>
 
-          {/* STATUS FILTER */}
           <div>
-            <label className='text-gray-400 text-sm mb-2 block'>Filter by status</label>
+            <label className='text-gray-400 text-sm mb-2 block font-semibold'>Filter by Status</label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className='w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white text-sm focus:outline-none focus:border-orange-500'
+              className='w-full px-4 py-3 rounded-lg bg-neutral-700 border border-neutral-600 text-white text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/30 transition-all'
             >
               <option value='all'>All Requests</option>
               <option value='pending'>Pending</option>
@@ -195,7 +227,7 @@ const Approvals = () => {
           filteredRequests.map((request) => (
             <motion.div
               key={request.id}
-              className='bg-neutral-800 rounded-lg border border-neutral-700 overflow-hidden'
+              className='bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-orange-500/40 transition-all'
               layout
             >
               {/* REQUEST HEADER */}
@@ -203,18 +235,44 @@ const Approvals = () => {
                 onClick={() => setExpandedId(expandedId === request.id ? null : request.id)}
                 className='w-full p-6 flex items-center justify-between hover:bg-neutral-700/50 transition-all'
               >
-                <div className='flex items-center gap-4 flex-1'>
-                  <div className='w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold'>
+                <div className='flex items-center gap-4 flex-1 text-left'>
+                  {/* AVATAR */}
+                  <div className='w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0'>
                     {request.fullName.charAt(0)}
                   </div>
-                  <div className='text-left flex-1'>
-                    <p className='text-white font-semibold'>{request.fullName}</p>
-                    <p className='text-gray-400 text-sm'>{request.email}</p>
+
+                  {/* INFO */}
+                  <div className='flex-1'>
+                    <div className='flex items-center gap-3 mb-1'>
+                      <p className='text-white font-semibold text-lg'>{request.fullName}</p>
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${getExperienceBadgeColor(request.experienceLevel)}`}>
+                        {request.experienceLevel}
+                      </span>
+                      {hasHealthConcerns(request) && (
+                        <AlertCircle size={16} className='text-yellow-400' />
+                      )}
+                    </div>
+                    <div className='flex items-center gap-3 text-sm text-gray-400'>
+                      <Mail size={14} />
+                      <span>{request.email}</span>
+                      <span className='text-gray-600'>•</span>
+                      <Dumbbell size={14} />
+                      <span>{request.fitnessGoal}</span>
+                    </div>
                   </div>
-                  <div className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(request.status)}`}>
-                    {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+
+                  {/* STATUS & DATE */}
+                  <div className='flex flex-col items-end gap-2'>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(request.status)}`}>
+                      {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                    </span>
+                    <span className='text-xs text-gray-500 flex items-center gap-1'>
+                      <Clock size={12} />
+                      {request.submittedAt}
+                    </span>
                   </div>
                 </div>
+
                 <motion.div
                   animate={{ rotate: expandedId === request.id ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
@@ -237,133 +295,181 @@ const Approvals = () => {
                     <div className='p-6 bg-neutral-800/50 space-y-6'>
                       {/* PERSONAL INFO */}
                       <div>
-                        <h3 className='text-orange-500 font-bold mb-4'>Personal Information</h3>
+                        <h3 className='text-orange-500 font-bold mb-4 flex items-center gap-2'>
+                          <User size={18} />
+                          Personal Information
+                        </h3>
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                          <div className='flex items-center gap-3'>
-                            <User size={18} className='text-orange-500' />
-                            <div>
-                              <p className='text-gray-400 text-sm'>Full Name</p>
-                              <p className='text-white'>{request.fullName}</p>
-                            </div>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Full Name</p>
+                            <p className='text-white mt-1'>{request.fullName}</p>
                           </div>
-                          <div className='flex items-center gap-3'>
-                            <Mail size={18} className='text-orange-500' />
-                            <div>
-                              <p className='text-gray-400 text-sm'>Email</p>
-                              <p className='text-white'>{request.email}</p>
-                            </div>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Email</p>
+                            <p className='text-white mt-1 break-all'>{request.email}</p>
                           </div>
-                          <div className='flex items-center gap-3'>
-                            <Phone size={18} className='text-orange-500' />
-                            <div>
-                              <p className='text-gray-400 text-sm'>Phone</p>
-                              <p className='text-white'>{request.phone}</p>
-                            </div>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Phone</p>
+                            <p className='text-white mt-1'>{request.phone}</p>
                           </div>
-                          <div className='flex items-center gap-3'>
-                            <Calendar size={18} className='text-orange-500' />
-                            <div>
-                              <p className='text-gray-400 text-sm'>Date of Birth</p>
-                              <p className='text-white'>{request.dateOfBirth}</p>
-                            </div>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Date of Birth</p>
+                            <p className='text-white mt-1'>{request.dateOfBirth}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Gender</p>
-                            <p className='text-white'>{request.gender}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Gender</p>
+                            <p className='text-white mt-1'>{request.gender}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Submitted On</p>
-                            <p className='text-white'>{request.submittedAt}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Submitted</p>
+                            <p className='text-white mt-1'>{request.submittedAt}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* FITNESS INFO */}
                       <div>
-                        <h3 className='text-orange-500 font-bold mb-4'>Fitness Profile</h3>
+                        <h3 className='text-orange-500 font-bold mb-4 flex items-center gap-2'>
+                          <Dumbbell size={18} />
+                          Fitness Profile
+                        </h3>
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Fitness Goal</p>
-                            <p className='text-white'>{request.fitnessGoal}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Fitness Goal</p>
+                            <p className='text-white mt-1'>{request.fitnessGoal}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Experience Level</p>
-                            <p className='text-white'>{request.experienceLevel}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Experience Level</p>
+                            <p className='text-white mt-1'>{request.experienceLevel}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Gym Experience</p>
-                            <p className='text-white'>{request.pastGymExperience}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Gym Experience</p>
+                            <p className='text-white mt-1'>{request.pastGymExperience}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Workout Frequency</p>
-                            <p className='text-white'>{request.workoutFrequency}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Workout Frequency</p>
+                            <p className='text-white mt-1'>{request.workoutFrequency}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* HEALTH INFO */}
                       <div>
-                        <h3 className='text-orange-500 font-bold mb-4'>Health Information</h3>
+                        <h3 className='text-orange-500 font-bold mb-4 flex items-center gap-2'>
+                          <Heart size={18} />
+                          Health Information
+                        </h3>
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Current Conditions</p>
-                            <p className='text-white'>{request.currentConditions.join(', ')}</p>
+                          <div className={`rounded-lg p-4 ${request.currentConditions[0] !== 'None' ? 'bg-yellow-500/20 border border-yellow-500/40' : 'bg-neutral-700/50'}`}>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Current Conditions</p>
+                            <p className={`mt-1 ${request.currentConditions[0] !== 'None' ? 'text-yellow-300 font-semibold' : 'text-white'}`}>
+                              {request.currentConditions.join(', ')}
+                            </p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Medications</p>
-                            <p className='text-white'>{request.medications || 'None'}</p>
+                          <div className={`rounded-lg p-4 ${request.medications !== 'None' ? 'bg-yellow-500/20 border border-yellow-500/40' : 'bg-neutral-700/50'}`}>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Medications</p>
+                            <p className={`mt-1 ${request.medications !== 'None' ? 'text-yellow-300 font-semibold' : 'text-white'}`}>
+                              {request.medications || 'None'}
+                            </p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Allergies</p>
-                            <p className='text-white'>{request.allergies || 'None'}</p>
+                          <div className={`rounded-lg p-4 ${request.allergies !== 'None' ? 'bg-yellow-500/20 border border-yellow-500/40' : 'bg-neutral-700/50'}`}>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Allergies</p>
+                            <p className={`mt-1 ${request.allergies !== 'None' ? 'text-yellow-300 font-semibold' : 'text-white'}`}>
+                              {request.allergies || 'None'}
+                            </p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Sleep Hours/Night</p>
-                            <p className='text-white'>{request.sleepHours} hours</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Sleep Hours/Night</p>
+                            <p className='text-white mt-1'>{request.sleepHours} hours</p>
                           </div>
                         </div>
                       </div>
 
                       {/* EMERGENCY CONTACT */}
                       <div>
-                        <h3 className='text-orange-500 font-bold mb-4'>Emergency Contact</h3>
+                        <h3 className='text-orange-500 font-bold mb-4 flex items-center gap-2'>
+                          <Phone size={18} />
+                          Emergency Contact
+                        </h3>
                         <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Name</p>
-                            <p className='text-white'>{request.emergencyContactName}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Name</p>
+                            <p className='text-white mt-1'>{request.emergencyContactName}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Phone</p>
-                            <p className='text-white'>{request.emergencyContactPhone}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Phone</p>
+                            <p className='text-white mt-1'>{request.emergencyContactPhone}</p>
                           </div>
-                          <div>
-                            <p className='text-gray-400 text-sm'>Relationship</p>
-                            <p className='text-white'>{request.relationship}</p>
+                          <div className='bg-neutral-700/50 rounded-lg p-4'>
+                            <p className='text-gray-400 text-xs font-semibold uppercase'>Relationship</p>
+                            <p className='text-white mt-1'>{request.relationship}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* ACTION BUTTONS */}
                       {request.status === 'pending' && (
-                        <div className='flex gap-4 pt-6 border-t border-neutral-700'>
+                        <div className='flex gap-3 pt-6 border-t border-neutral-700'>
                           <motion.button
                             onClick={() => handleApprove(request.id)}
-                            className='flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all'
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                            className='flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-green-500/30'
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
                             <Check size={18} />
-                            Approve
+                            Approve Member
                           </motion.button>
                           <motion.button
                             onClick={() => handleReject(request.id)}
-                            className='flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-all'
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                            className='flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-red-500/30'
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
                             <X size={18} />
-                            Reject
+                            Reject Request
                           </motion.button>
+                        </div>
+                      )}
+
+                      {request.status === 'approved' && (
+                        <div className='pt-6 border-t border-neutral-700 space-y-4'>
+                          <div className='flex items-center gap-2 bg-green-500/10 rounded-lg p-4 border border-green-500/30'>
+                            <Check size={20} className='text-green-400' />
+                            <p className='text-green-400 font-semibold'>Approved – Complete Setup</p>
+                          </div>
+                          <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                            <motion.button
+                              className='flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-blue-500/30'
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <User size={18} />
+                              Create Account
+                            </motion.button>
+                            <motion.button
+                              className='flex items-center justify-center gap-2 px-4 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-purple-500/30'
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <Dumbbell size={18} />
+                              Assign Plan
+                            </motion.button>
+                            <motion.button
+                              className='flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-emerald-500/30'
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <Check size={18} />
+                              Payment Received
+                            </motion.button>
+                          </div>
+                        </div>
+                      )}
+
+                      {request.status === 'rejected' && (
+                        <div className='flex items-center gap-2 pt-6 border-t border-neutral-700 bg-red-500/10 rounded-lg p-4'>
+                          <X size={20} className='text-red-400' />
+                          <p className='text-red-400 font-semibold'>This request has been rejected</p>
                         </div>
                       )}
                     </div>
@@ -373,9 +479,14 @@ const Approvals = () => {
             </motion.div>
           ))
         ) : (
-          <div className='bg-neutral-800 rounded-lg p-12 text-center'>
-            <p className='text-gray-400'>No requests found</p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className='bg-neutral-800 rounded-lg p-12 text-center border border-neutral-700'
+          >
+            <p className='text-gray-400 text-lg'>No requests found</p>
+            <p className='text-gray-500 text-sm mt-2'>Try adjusting your filters or search terms</p>
+          </motion.div>
         )}
       </motion.div>
     </motion.div>

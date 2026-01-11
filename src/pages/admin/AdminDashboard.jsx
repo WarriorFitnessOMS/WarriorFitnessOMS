@@ -38,6 +38,15 @@ const AdminDashboard = () => {
     { id: 5, member: 'Tom Brown', amount: '$149', date: '2024-01-16', status: 'Failed' }
   ]
 
+  // Due payments data
+  const duePayments = [
+    { id: 1, member: 'Alex Carter', amount: '$99', dueDate: '2024-01-15', daysOverdue: 5, membershipType: 'Basic' },
+    { id: 2, member: 'Emily Davis', amount: '$149', dueDate: '2024-01-10', daysOverdue: 10, membershipType: 'Standard' },
+    { id: 3, member: 'Robert Wilson', amount: '$199', dueDate: '2024-01-22', daysOverdue: 0, membershipType: 'Premium' },
+    { id: 4, member: 'Lisa Anderson', amount: '$99', dueDate: '2024-01-08', daysOverdue: 12, membershipType: 'Basic' },
+    { id: 5, member: 'David Martinez', amount: '$149', dueDate: '2024-01-18', daysOverdue: 2, membershipType: 'Standard' }
+  ]
+
   const statsCards = [
     { number: '188', label: 'Active Members', sub: '+2 from last month' },
     { number: '5', label: 'Coaches', sub: '+2 from last month' },
@@ -198,7 +207,7 @@ const AdminDashboard = () => {
       </motion.div>
 
       {/* RECENT PAYMENTS TABLE */}
-      <motion.div variants={itemVariants} className='bg-neutral-800 rounded-lg p-6 border border-orange-500/20'>
+      <motion.div variants={itemVariants} className='bg-neutral-800 rounded-lg p-6 border border-orange-500/20 mb-8'>
         <h2 className='text-xl font-bold text-orange-500 mb-4'>Recent Payments</h2>
         <div className='overflow-x-auto'>
           <table className='w-full'>
@@ -236,8 +245,60 @@ const AdminDashboard = () => {
         </div>
       </motion.div>
 
+      {/* DUE PAYMENTS SUMMARY */}
+      <motion.div variants={itemVariants} className='bg-neutral-800 rounded-lg p-6 border border-red-500/20 mb-8'>
+        <div className='flex justify-between items-center mb-6'>
+          <h2 className='text-xl font-bold text-red-500'>Due Payments Summary</h2>
+          <div className='flex gap-2'>
+            <div className='bg-red-500/20 px-3 py-1 rounded text-xs font-semibold text-red-400'>5 Due</div>
+            <div className='bg-yellow-500/20 px-3 py-1 rounded text-xs font-semibold text-yellow-400'>$695 Total</div>
+          </div>
+        </div>
+        <div className='overflow-x-auto'>
+          <table className='w-full'>
+            <thead>
+              <tr className='border-b border-red-500/20'>
+                <th className='text-left py-3 px-4 text-sm font-semibold text-gray-300'>Member</th>
+                <th className='text-left py-3 px-4 text-sm font-semibold text-gray-300'>Membership</th>
+                <th className='text-left py-3 px-4 text-sm font-semibold text-gray-300'>Amount</th>
+                <th className='text-left py-3 px-4 text-sm font-semibold text-gray-300'>Due Date</th>
+                <th className='text-left py-3 px-4 text-sm font-semibold text-gray-300'>Days Overdue</th>
+              </tr>
+            </thead>
+            <tbody>
+              {duePayments.map((payment) => (
+                <tr key={payment.id} className='border-b border-neutral-700 hover:bg-neutral-700/50 transition-all'>
+                  <td className='py-3 px-4 text-sm text-gray-300'>{payment.member}</td>
+                  <td className='py-3 px-4 text-sm'>
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                      payment.membershipType === 'Premium' ? 'bg-orange-500/20 text-orange-400' :
+                      payment.membershipType === 'Standard' ? 'bg-blue-500/20 text-blue-400' :
+                      'bg-gray-500/20 text-gray-400'
+                    }`}>
+                      {payment.membershipType}
+                    </span>
+                  </td>
+                  <td className='py-3 px-4 text-sm font-semibold text-red-500'>{payment.amount}</td>
+                  <td className='py-3 px-4 text-sm text-gray-400'>{payment.dueDate}</td>
+                  <td className='py-3 px-4 text-sm'>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      payment.daysOverdue > 10 ? 'bg-red-500/30 text-red-300' :
+                      payment.daysOverdue > 5 ? 'bg-orange-500/30 text-orange-300' :
+                      payment.daysOverdue > 0 ? 'bg-yellow-500/30 text-yellow-300' :
+                      'bg-green-500/30 text-green-300'
+                    }`}>
+                      {payment.daysOverdue > 0 ? `${payment.daysOverdue} days` : 'Due Soon'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
+
       {/* SMALL WIDGETS */}
-      <motion.div variants={itemVariants} className='grid grid-cols-1 md:grid-cols-3 gap-6 mt-8'>
+      <motion.div variants={itemVariants} className='grid grid-cols-1 md:grid-cols-3 gap-6'>
         {/* ATTENDANCE */}
         <div className='bg-neutral-800 rounded-lg p-6 border border-orange-500/20'>
           <h3 className='text-lg font-bold text-orange-500 mb-3'>Today's Attendance</h3>
@@ -268,21 +329,23 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* ALERTS */}
+        {/* NEW MEMBER SIGNUPS */}
         <div className='bg-neutral-800 rounded-lg p-6 border border-orange-500/20'>
-          <h3 className='text-lg font-bold text-orange-500 mb-3'>System Alerts</h3>
-          <div className='space-y-2'>
-            <div className='flex items-center gap-2 p-2 bg-yellow-500/10 rounded text-xs'>
-              <span>⚠️</span>
-              <span className='text-yellow-400'>5 pending registrations</span>
+          <h3 className='text-lg font-bold text-orange-500 mb-3'>New Member Signups</h3>
+          <div className='text-3xl font-bold text-white mb-2'>24</div>
+          <p className='text-sm text-gray-400'>This month</p>
+          <div className='mt-4 space-y-2 text-sm'>
+            <div className='flex justify-between items-center'>
+              <span className='text-gray-300'>Premium Signups</span>
+              <span className='font-bold text-orange-400'>12</span>
             </div>
-            <div className='flex items-center gap-2 p-2 bg-green-500/10 rounded text-xs'>
-              <span>✅</span>
-              <span className='text-green-400'>System running normally</span>
+            <div className='flex justify-between items-center'>
+              <span className='text-gray-300'>Standard Signups</span>
+              <span className='font-bold text-blue-400'>8</span>
             </div>
-            <div className='flex items-center gap-2 p-2 bg-orange-500/10 rounded text-xs'>
-              <span>📢</span>
-              <span className='text-orange-400'>New feature update available</span>
+            <div className='flex justify-between items-center'>
+              <span className='text-gray-300'>Basic Signups</span>
+              <span className='font-bold text-gray-400'>4</span>
             </div>
           </div>
         </div>

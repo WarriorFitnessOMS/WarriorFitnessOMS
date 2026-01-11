@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Dumbbell, Apple, Users, Heart, icons } from 'lucide-react';
-import { assets } from '../assets/assets';
+import { assets } from '../../assets/assets';
 
 const WhyUs = () => {
 

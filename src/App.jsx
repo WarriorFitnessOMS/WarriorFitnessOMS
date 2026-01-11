@@ -1,27 +1,73 @@
 import React from 'react'
-import Navbar from './components/Navbar'
 import {  Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import Register from './pages/Register'
-import Footer from './components/Footer'
-import Login from './pages/Login'
+
+//Layouts
+import PublicLayout from './components/layout/PublicLayout'
+import DashboardLayout from './components/layout/DashboardLayout'
+import ProtectedRoute from './components/auth/ProtectedRoute'
+
+//Public pages
+import Home from './pages/publicWeb/Home'
+import Register from './pages/publicWeb/Register'
+import Login from './pages/publicWeb/Login'
+
+//import routes from routesConfig
+import { adminRoutes, coachRoutes, memberRoutes } from './routes/routesConfig'
+
 
 
 const App = () => {
   return (
-    <div className='bg-neutral-800 min-h-screen'>
-      <>
-        <Navbar/>
+    <Routes>
+      {/* -------PUBLIC ZONE--------- */}
+      <Route element={<PublicLayout/>}>
+        <Route path='/' element={<Home/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+      </Route>
 
-        <Routes >
-          <Route path ='/' element={ <Home/>} />
-          <Route path ='/register' element={ <Register/>} />
-          <Route path ='/login' element={ <Login/>} />
-        </Routes>
 
-        <Footer/>
-      </>
-    </div>
+
+      {/* SHARED DASHBOARD LAYOUT */}
+      <Route element={<DashboardLayout />}>
+        
+        {/* ADMIN ROUTES */}
+        <Route path="/admin">
+          {adminRoutes.map(({path, element}) => (
+            <Route
+              key={path}
+              path={path}
+              element = {<ProtectedRoute role="admin">{React.createElement(element)}</ProtectedRoute>}
+            />
+          ))}
+        </Route>
+
+        {/* COACH ROUTES */}
+        <Route path="/coach">
+          {coachRoutes.map(({path, element}) => (
+              <Route
+                key={path}
+                path={path}
+                element = {<ProtectedRoute role="coach">{React.createElement(element)}</ProtectedRoute>}
+              />
+            ))}
+        </Route>
+
+        {/* MEMBER ROUTES */}
+        <Route path="/member">
+          {memberRoutes.map(({path, element}) => (
+              <Route
+                key={path}
+                path={path}
+                element = {<ProtectedRoute role="member">{React.createElement(element)}</ProtectedRoute>}
+              />
+            ))}
+        </Route>
+
+      </Route>
+
+
+    </Routes>
   )
 }
 

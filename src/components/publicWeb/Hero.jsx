@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { assets } from '../assets/assets'
+import { assets } from '../../assets/assets'
 import { AnimatePresence, easeOut, motion } from 'framer-motion'
 import LightEffects from './LightEffects';
 import { useNavigate } from 'react-router-dom';

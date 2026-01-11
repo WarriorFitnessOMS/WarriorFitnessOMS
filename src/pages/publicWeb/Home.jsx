@@ -1,14 +1,13 @@
 import React from 'react';
-import Hero from '../components/Hero';
-import WhyUs from '../components/WhyUs';
-import SuccessStories from '../components/SuccessStories';
-import Achivements from '../components/Achivements';
-import Plans from '../components/Plans';
-import FAQ from '../components/FAQ';
-import Calculators from '../components/Calculators';
-import Footer from '../components/Footer';
-import Facilities from '../components/Facilities';
-import AboutUs from '../components/AboutUs';
+import Hero from '../../components/publicWeb/Hero';
+import WhyUs from '../../components/publicWeb/WhyUs';
+import SuccessStories from '../../components/publicWeb/SuccessStories';
+import Achivements from '../../components/publicWeb/Achivements';
+import Plans from '../../components/publicWeb/Plans';
+import FAQ from '../../components/publicWeb/FAQ';
+import Calculators from '../../components/publicWeb/Calculators';
+import Facilities from '../../components/publicWeb/Facilities';
+import AboutUs from '../../components/publicWeb/AboutUs';
 
 const Home = () => {
     return (

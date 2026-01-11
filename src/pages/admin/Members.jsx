@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Plus, Check } from 'lucide-react'
+import { Search, Plus } from 'lucide-react'
 
 const Members = () => {
   const [statusFilter, setStatusFilter] = useState('all')
@@ -26,13 +26,7 @@ const Members = () => {
       plan: 'Premium',
       joinDate: '2024-06-15',
       expiryDate: '2025-06-15',
-      status: 'active',
-      todayAttendance: 'Present',
-      attendanceHistory: [
-        { date: '2024-01-10', status: 'Present' },
-        { date: '2024-01-09', status: 'Absent' },
-        { date: '2024-01-08', status: 'Present' }
-      ]
+      status: 'active'
     },
     {
       id: 'M002',
@@ -42,9 +36,7 @@ const Members = () => {
       plan: 'Standard',
       joinDate: '2023-12-01',
       expiryDate: '2025-01-05',
-      status: 'active',
-      todayAttendance: 'Not Marked',
-      attendanceHistory: [{ date: '2024-01-08', status: 'Present' }]
+      status: 'active'
     },
     {
       id: 'M003',
@@ -54,9 +46,7 @@ const Members = () => {
       plan: 'Basic',
       joinDate: '2024-11-15',
       expiryDate: '2024-12-15',
-      status: 'expired',
-      todayAttendance: 'N/A',
-      attendanceHistory: []
+      status: 'expired'
     },
     {
       id: 'M004',
@@ -66,9 +56,7 @@ const Members = () => {
       plan: 'Premium',
       joinDate: '2024-05-20',
       expiryDate: '2025-02-10',
-      status: 'active',
-      todayAttendance: 'Present',
-      attendanceHistory: [{ date: '2024-01-10', status: 'Present' }]
+      status: 'active'
     },
     {
       id: 'M005',
@@ -78,9 +66,7 @@ const Members = () => {
       plan: 'Standard',
       joinDate: '2024-08-10',
       expiryDate: '2025-01-20',
-      status: 'suspended',
-      todayAttendance: 'N/A',
-      attendanceHistory: []
+      status: 'suspended'
     }
   ])
 
@@ -128,24 +114,6 @@ const Members = () => {
     }
   }
 
-  const handleMarkAttendance = (memberId) => {
-    setMembers(prev => prev.map(member => {
-      if (member.id === memberId && member.status === 'active') {
-        const today = new Date().toISOString().split('T')[0]
-        const alreadyMarked = member.attendanceHistory.some(a => a.date === today)
-        
-        if (!alreadyMarked) {
-          return {
-            ...member,
-            todayAttendance: 'Present',
-            attendanceHistory: [{ date: today, status: 'Present' }, ...member.attendanceHistory]
-          }
-        }
-      }
-      return member
-    }))
-  }
-
   const handleAddMember = () => {
     if (newMemberForm.fullName && newMemberForm.email && newMemberForm.phone) {
       const joinDate = new Date()
@@ -164,9 +132,7 @@ const Members = () => {
         plan: newMemberForm.plan,
         joinDate: joinDate.toISOString().split('T')[0],
         expiryDate: expiryDate.toISOString().split('T')[0],
-        status: 'active',
-        todayAttendance: 'Not Marked',
-        attendanceHistory: []
+        status: 'active'
       }
 
       setMembers([newMember, ...members])
@@ -199,7 +165,7 @@ const Members = () => {
             <span className='text-orange-500'>Members</span>
             <span className='text-white'> Management</span>
           </h1>
-          <p className='text-gray-400 text-sm mt-2'>Manage gym members, plans, and attendance</p>
+          <p className='text-gray-400 text-sm mt-2'>Manage gym members and plans</p>
         </div>
         <motion.button
           onClick={() => setShowAddForm(true)}
@@ -362,7 +328,6 @@ const Members = () => {
                 <th className='text-left py-4 px-6 text-sm font-semibold text-gray-300'>Plan</th>
                 <th className='text-left py-4 px-6 text-sm font-semibold text-gray-300'>Expiry</th>
                 <th className='text-left py-4 px-6 text-sm font-semibold text-gray-300'>Status</th>
-                <th className='text-left py-4 px-6 text-sm font-semibold text-gray-300'>Attendance</th>
               </tr>
             </thead>
             <tbody>
@@ -383,23 +348,6 @@ const Members = () => {
                     <span className={`px-3 py-1 rounded text-xs font-bold ${getStatusColor(member.status)}`}>
                       {member.status.charAt(0).toUpperCase() + member.status.slice(1)}
                     </span>
-                  </td>
-                  <td className='py-4 px-6 text-sm'>
-                    <motion.button
-                      onClick={() => handleMarkAttendance(member.id)}
-                      disabled={member.status !== 'active' || member.todayAttendance === 'Present'}
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 ${
-                        member.status !== 'active' || member.todayAttendance === 'Present'
-                          ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                          : 'bg-green-500 hover:bg-green-600 text-white'
-                      }`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      title={member.status !== 'active' ? 'Only active members' : member.todayAttendance === 'Present' ? 'Already marked' : 'Mark attendance'}
-                    >
-                      <Check size={18} />
-                      {member.todayAttendance === 'Present' ? 'Marked' : 'Mark'}
-                    </motion.button>
                   </td>
                 </tr>
               ))}

@@ -23,7 +23,6 @@ import Membership from '../pages/member/Membership'
 import WorkoutPlansMember from '../pages/member/WorkoutPlansMember'
 import NutritionPlansMember from '../pages/member/NutritionPlansMember'
 import ExerciseVideosMember from '../pages/member/ExerciseVideosMember'
-import Challanges from '../pages/member/Challanges'
 import SupportMember from '../pages/member/SupportMember'
 import Plans from '../pages/admin/Plans'
 
@@ -59,6 +58,5 @@ export const memberRoutes = [
     { path: 'workouts', element: WorkoutPlansMember },
     { path: 'nutrition-plans', element: NutritionPlansMember },
     { path: 'videos', element: ExerciseVideosMember },
-    { path: 'challenges', element: Challanges },
     { path: 'support', element: SupportMember },
 ]

@@ -94,7 +94,6 @@ const Sidebar = () => {
       { label: "Workout Plans", path: "/member/workouts", icon: ClipboardList },
       { label: "Nutrition Plans", path: "/member/nutrition-plans", icon: Coffee },
       { label: "Exercise Videos", path: "/member/videos", icon: Youtube },
-      { label: "Challenges", path: "/member/challenges", icon: Target },
       { label: "Support", path: "/member/support", icon: LifeBuoy },
     ]
   }

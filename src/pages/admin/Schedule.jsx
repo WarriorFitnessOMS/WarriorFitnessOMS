@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Calendar, Users, Clock, X, User } from 'lucide-react';
@@ -99,7 +100,7 @@ const Schedule = () => {
 
       {/* STATS */}
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8'>
-        <div className='bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl p-6 border border-blue-500/20'>
+        <div className='bg-linear-to-br from-blue-500/10 to-blue-500/5 rounded-xl p-6 border border-blue-500/20'>
           <div className='flex items-center gap-3'>
             <div className='p-3 bg-blue-500/20 rounded-lg'>
               <Calendar className='text-blue-400' size={24} />
@@ -111,7 +112,7 @@ const Schedule = () => {
           </div>
         </div>
 
-        <div className='bg-gradient-to-br from-green-500/10 to-green-500/5 rounded-xl p-6 border border-green-500/20'>
+        <div className='bg-linear-to-br from-green-500/10 to-green-500/5 rounded-xl p-6 border border-green-500/20'>
           <div className='flex items-center gap-3'>
             <div className='p-3 bg-green-500/20 rounded-lg'>
               <Clock className='text-green-400' size={24} />
@@ -123,7 +124,7 @@ const Schedule = () => {
           </div>
         </div>
 
-        <div className='bg-gradient-to-br from-orange-500/10 to-orange-500/5 rounded-xl p-6 border border-orange-500/20'>
+        <div className='bg-linear-to-br from-orange-500/10 to-orange-500/5 rounded-xl p-6 border border-orange-500/20'>
           <div className='flex items-center gap-3'>
             <div className='p-3 bg-orange-500/20 rounded-lg'>
               <Users className='text-orange-400' size={24} />

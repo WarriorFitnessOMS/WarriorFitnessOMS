@@ -16,6 +16,7 @@ import {
   ClipboardCheck,
   Settings,
   Youtube,
+  NotepadText
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -53,6 +54,11 @@ const Sidebar = () => {
         label: "Attendance",
         path: "/admin/attendance",
         icon: ClipboardCheck,
+      },
+      {
+        label: "Plans",
+        path: "/admin/plans",
+        icon: NotepadText,
       },
       {
         label: "Schedule",
